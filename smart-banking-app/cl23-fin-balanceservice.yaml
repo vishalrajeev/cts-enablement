@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: balance-banking-rv
+    version: "1"
+  name: balance-banking-rv
+spec:
+  ports:
+    - port: 6001
+      protocol: TCP
+      targetPort: 6001
+  selector:
+    app: balance-banking-rv
+    version: "1"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-banking-rv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balance-banking-rv
+  template:
+    metadata:
+      labels:
+        app: balance-banking-rv
+        version: "1"
+      annotations:
+        #sidecar.opentelemetry.io/inject: "true"
+        instrumentation.opentelemetry.io/inject-java: "true"
+    spec:
+      containers:
+        - name: balance-banking-rv
+          command: ["/bin/sh"]
+          args: ["-c", "java $JAVA_OPTS  -jar /balanceService-0.0.1-SNAPSHOT.jar"]
+          env:
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=balance-banking-rv,service.namespace=banking,k8s.namespace.name=banking
+            - name: JAVA_OPTS
+              value: ''
+            - name: DB_HOST
+              value: jdbc:mysql://appd-cloud-test.czgm2c0uvnhv.us-west-2.rds.amazonaws.com:3306/finance
+            - name: DB_USERNAME
+              value: cisco
+            - name: DB_PASSWORD
+              value: D3ep!B9H9Vmn
+          image: sgioia/cl23-fin-balance:3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6001

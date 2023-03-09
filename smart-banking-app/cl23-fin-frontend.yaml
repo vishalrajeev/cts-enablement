@@ -1,0 +1,77 @@
+##################################################################################################
+# Frontend service
+##################################################################################################
+
+apiVersion: v1
+data:
+  shim.js: |-
+   require("appdynamics").profile({
+        controllerHostName: 'channel.saas.appdynamics.com',
+        controllerPort: 443,
+        controllerSslEnabled: true,
+        accountName: 'channel',
+        accountAccessKey: 'qrzwtryvbavv',
+        applicationName: 'Finance-RV',
+        tierName: 'frontend',
+        nodeName: 'frontend',
+        analyticsHostName: 'channel.saas.appdynamics.com',
+        analyticsPort: 443,
+        analyticsSslEnabled: true,
+        analytics: {
+              host: 'ciscolive2023-appdynamics-infraviz.appdynamics',
+              port: 9090,
+            SSL: false }});
+        require("./frontend.js")
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: appd-nodejs-cm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-banking-rv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-banking-rv
+  template:
+    metadata:
+      labels:
+        app: frontend-banking-rv
+        version: "1"
+    spec:
+      containers:
+      - env:
+        - name: WITHDRAW_HOST
+          value: "withdrawal-banking-rv"
+        - name: WITHDRAW_PORT
+          value: "8080"
+        - name: LOAN_SERVICE
+          value: "loan-banking-rv"
+        - name: LOAN_PORT
+          value: "5001"
+        - name: ACCOUNT_SERVICE
+          value: "account-banking-rv"
+        - name: ACCOUNT_PORT
+          value: "5001"
+        - name: APPD_PROXY_CONTROL_PATH
+          value: /tmp/appd/run
+        name: frontend-banking-rv
+        image: sgioia/cl23-fin-frontend:2
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: shared-data
+            mountPath: /tmp/appd/run
+          - name: agent-config
+            mountPath: /shim.js
+            subPath: shim.js
+        ports:
+        - containerPort: 8080
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      - name: agent-config
+        configMap:
+          name: appd-nodejs-cm

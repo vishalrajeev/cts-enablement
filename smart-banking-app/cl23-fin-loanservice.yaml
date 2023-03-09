@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: loan-banking-rv
+    version: "1"
+  name: loan-banking-rv
+spec:
+  ports:
+    - port: 5001
+      protocol: TCP
+      targetPort: 5001
+  selector:
+    app: loan-banking-rv
+    version: "1"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loan-banking-rv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loan-banking-rv
+  template:
+    metadata:
+      labels:
+        app: loan-banking-rv
+        version: "1"
+      annotations:
+        #sidecar.opentelemetry.io/inject: "true"
+        instrumentation.opentelemetry.io/inject-java: "true"
+    spec:
+      containers:
+        - name: loan-banking-rv
+          #resources:
+            #requests:
+              #memory: "380Mi"
+              #cpu: "250m"
+            #limits:
+              #memory: "380Mi"
+              #cpu: "500m"
+          command: ["/bin/sh"]
+          args: ["-c", "java $JAVA_OPTS  -jar /loanService-0.0.1-SNAPSHOT.jar"]
+          env:
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=loan-banking-rv,service.namespace=banking,k8s.namespace.name=banking
+            - name: JAVA_OPTS
+              value: ''
+            - name: DB_HOST
+              value: jdbc:mysql://appd-cloud-test.czgm2c0uvnhv.us-west-2.rds.amazonaws.com/finance
+            - name: DB_USERNAME
+              value: cisco
+            - name: DB_PASSWORD
+              value: D3ep!B9H9Vmn
+            - name: creditscore.url
+              value: http://creditscore-banking-rv:5001/getCreditScore
+            - name: approval.approval.url
+              value: http://approval-banking-rv:5001/approve
+          image: sgioia/cl23-fin-loan:2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001

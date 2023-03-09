@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: account-banking-rv
+    version: "1"
+  name: account-banking-rv
+spec:
+  ports:
+    - port: 5001
+      protocol: TCP
+      targetPort: 5001
+  selector:
+    app: account-banking-rv
+    version: "1"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-banking-rv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-banking-rv
+  template:
+    metadata:
+      labels:
+        app: account-banking-rv
+        version: "1"
+      annotations:
+        #sidecar.opentelemetry.io/inject: "true"
+        instrumentation.opentelemetry.io/inject-java: "true"
+    spec:
+      containers:
+        - name: account-banking-rv
+          command: ["/bin/sh"]
+          args: ["-c", "java $JAVA_OPTS  -jar /accountService-0.0.1-SNAPSHOT.jar"]
+          env:
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=account-banking-rv,service.namespace=banking,k8s.namespace.name=banking
+            - name: JAVA_OPTS
+              value: ' '
+            - name: DB_HOST
+              value: jdbc:mysql://appd-cloud-test.czgm2c0uvnhv.us-west-2.rds.amazonaws.com:3306/finance
+            - name: DB_USERNAME
+              value: cisco
+            - name: DB_PASSWORD
+              value: D3ep!B9H9Vmn
+          image: sgioia/cl23-fin-account:4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001
+

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: creditscore-banking-rv
+    version: "1"
+  name: creditscore-banking-rv
+spec:
+  ports:
+    - port: 5001
+      protocol: TCP
+      targetPort: 5001
+  selector:
+    app: creditscore-banking-rv
+    version: "1"
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creditscore-banking-rv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: creditscore-banking-rv
+  template:
+    metadata:
+      labels:
+        app: creditscore-banking-rv
+        version: "1"
+      annotations:
+        #sidecar.opentelemetry.io/inject: "true"
+        instrumentation.opentelemetry.io/inject-java: "true"
+    spec:
+      containers:
+        - name: creditscore-banking-rv
+          command: ["/bin/sh"]
+
+          args: ["-c", "java $JAVA_OPTS  -jar /creditCheckService-0.0.1-SNAPSHOT.jar"]
+          env:
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=creditscore-banking-rv,service.namespace=banking,k8s.namespace.name=banking
+            - name: JAVA_OPTS
+              value: ""
+          image: sgioia/cl23-fin-creditscore:2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001

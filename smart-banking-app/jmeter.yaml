@@ -1,0 +1,31 @@
+##################################################################################################
+# RoadRunner service
+##################################################################################################
+
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: loadrunner-banking-rv
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: loadrunner-banking-rv
+#  template:
+#    metadata:
+#      labels:
+#        app: loadrunner-banking-rv
+#        version: "1"
+#    spec:
+#      imagePullSecrets:
+#      - name: regcred
+#      containers:
+#      - env:
+#        - name: TEST_URL
+#          value: "a40b06974689147c2b8484780bcec0e9-425643385.eu-north-1.elb.amazonaws.com"
+#        - name: TEST_PORT
+#          value: "80"
+#        name: loadrunner-banking-rv
+#        image: sgioia/cl23-fincloud-runner:1
+#        imagePullPolicy: Always
+

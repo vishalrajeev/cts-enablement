@@ -1,0 +1,76 @@
+deploymentMode: PRIMARY
+
+install:
+  metrics-server: true
+installInfraViz: true
+installClusterAgent: true
+# AppDynamics controller info
+controllerInfo:
+  url: https://channel.saas.appdynamics.com
+  account: channel
+  username: rvishal
+  password: changeme
+  accessKey: qrzwtryvbavv
+  globalAccount: channel_9d8f15cf-0acf-4510-bf5b-7147aae4035c
+  
+# RBAC config
+createServiceAccount: true
+agentServiceAccount: appdynamics-cluster-agent
+operatorServiceAccount: appdynamics-operator
+infravizServiceAccount: appdynamics-infraviz
+
+# Cluster agent config
+clusterAgent:
+  nsToMonitorRegex: anthos|appdynamics
+
+#Auto-instrumentation Config
+instrumentationConfig:
+  enabled: true
+  instrumentationMethod: Env
+  nsToInstrumentRegex: anthos
+  defaultAppName: Bank-of-Anthos
+  imageInfo:
+    java:
+      image: "docker.io/appdynamics/java-agent:latest"
+      agentMountPath: /opt/appdynamics
+      imagePullPolicy: Always
+  instrumentationRules:
+    - language: java
+#InfraViz config
+infraViz:
+  nodeOS: "linux"
+  enableMasters: true
+  stdoutLogging: true
+  #enableContainerHostId: true
+  enableServerViz: true
+  enableDockerViz: false
+
+# Netviz config
+netViz:
+  enabled: true
+  netVizPort: 3892
+
+agentPod:
+  resources:
+    limits:
+      cpu: "50m"
+    requests:
+      cpu: "20m"
+  #tolerations:
+  #  - effect: NoSchedule
+  #    operator: Exists
+  #    key: taint-agent
+#operatorPod:
+#  tolerations:
+#    - effect: NoSchedule
+#      operator: Exists
+#      key: taint-agent
+
+#infravizPod:
+#  tolerations:
+#    - effect: NoSchedule
+#      operator: Exists
+#      key: taint-agent
+#    - effect: NoSchedule
+#      operator: Exists
+#      key: taint-app
