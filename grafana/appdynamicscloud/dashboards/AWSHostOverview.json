@@ -1,0 +1,785 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_AppDynamics_Cloud",
+      "label": "${DS_AppDynamics_Cloud}",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "appdynamicscloud",
+      "pluginName": "${DS_AppDynamics_Cloud}"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.5"
+    },
+    {
+      "type": "datasource",
+      "id": "appdynamicscloud",
+      "name": "${DS_AppDynamics_Cloud}",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Total number of AWS hosts. Click the value to open AppDynamics Cloud UI.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Total Hosts - Click the value to open AppDynamics Cloud UI",
+              "url": "${Source}/ui/observe/aws/ec2?filter=attributes(status) IN [${Status:raw}]&since=${__from}&until=${__to}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH \n`Total Hosts - Click the value to open AppDynamics Cloud UI`: count\n FROM\ns: entities(aws:ec2)\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Hosts",
+      "transformations": [
+        {
+          "id": "concatenate",
+          "options": {
+            "frameNameLabel": "frame",
+            "frameNameMode": "drop"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Total number of AWS hosts with Critical status. Click the value to open AppDynamics Cloud UI.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Critical AWS Hosts",
+              "url": "${Source}/ui/observe/aws/ec2?filter=attributes(status) in [3]&since=${__from}&until=${__to}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "fetch `Critical AWS Hosts - Click the value to open AppDynamics Cloud UI`: count\nfrom\ns: entities(aws:ec2) [attributes(`status`) in [3] ]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Critical",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Total number of AWS hosts with Warning status. Click the value to open AppDynamics Cloud UI.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Warning AWS Hosts",
+              "url": "${Source}/ui/observe/aws/ec2?filter=attributes(status) in [2]&since=${__from}&until=${__to}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "fetch `Warning AWS Hosts - Click the value to open AppDynamics Cloud UI`: count\nfrom\ns: entities(aws:ec2) [attributes(`status`) in [2] ]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Warning",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Total number of AWS hosts with Unknown status. Click the value to open AppDynamics Cloud UI.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#677384",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Unknown AWS Hosts",
+              "url": "${Source}/ui/observe/aws/ec2?filter=attributes(status) in [1, null]&since=${__from}&until=${__to}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 15,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "fetch `Unknown AWS Hosts - Click the value to open AppDynamics Cloud UI`: count\nfrom\ns: entities(aws:ec2) [attributes(`status`) in [1,null] ]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Unknown",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Total number of AWS hosts with Normal or Healthy status. Click the value to open AppDynamics Cloud UI.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Normal/Healthy AWS Hosts",
+              "url": "${Source}/ui/observe/aws/ec2?filter=attributes(status) in [0]&since=${__from}&until=${__to}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "fetch `Normal/Healthy AWS Hosts - Click the value to open AppDynamics Cloud UI`: count\nfrom\ns: entities(aws:ec2) [attributes(`status`) in [0] ]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Healthy/Normal",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Navigate to AppDynamics Cloud UI.",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 4
+      },
+      "id": 18,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<br/>\n<a href=\"${Source}/ui/observe/aws/ec2?filter=attributes(status) IN [${Status:raw}]&since=${__from}&until=${__to}\" target=\"_blank\">\n  <div style=\"display:flex;justify-content:center;align-items: center;\">\n    <img src=\"./public/plugins/appdynamicscloud/img/logo.svg\" width='48' height='48' alt=\"AppDynamicsLogo\" style=\"margin-top: 80px;\" />\n    <h3 style=\"margin-bottom:0;font-size:28px;padding-left:10px;margin-top:80px;font-weight:bold;vertical-align:center\">Click here to view more <br/> on \n    AppDynamics Cloud<h3>\n  </div>\n</a> ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.0.5",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Host lists with the selected status values. Click Host ID to visit 'AWS Host Details' dashboard for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "color-text",
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "No Data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "green",
+                        "index": 3,
+                        "text": "Normal"
+                      },
+                      "1": {
+                        "color": "#677384",
+                        "index": 2,
+                        "text": "Unknown"
+                      },
+                      "2": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Warning"
+                      },
+                      "3": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Critical"
+                      },
+                      "null": {
+                        "color": "#677384",
+                        "index": 4,
+                        "text": "Unknown"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "AWS Host Details",
+                    "url": "d/AWSHostDetails/aws-host-details?orgId=1&${Status:queryparam}&to=${__to}&from=${__from}&var-HostId=${__data.fields[\"Host ID\"]}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network IO Incoming KiB/sec"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 207
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network IO Outgoing KiB/sec"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 185
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk Writes Ops/sec"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 147
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Utilization %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk Reads Ops/s"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk Writes Ops/s"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OS"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 8,
+        "y": 4
+      },
+      "id": 10,
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.0.5",
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "fetch \n`Status`:attributes(status),\n`Host ID`:attributes(host.id),\n`Host Name`:attributes(host.display_name),\n`OS`:attributes(os.type),\n`CPU Utilization %`: s.metrics(`infra:system.cpu.used.utilization`, `aws-cloudwatch`).value,\n`Disk Reads Ops/s`: s.metrics(`infra:system.disk.read.operations_sec`, `aws-cloudwatch`).value,\n`Disk Writes Ops/s`: s.metrics(`infra:system.disk.write.operations_sec`, `aws-cloudwatch`).value,\n`Network IO Incoming KiB/s`: s.metrics(`infra:system.network.receive.io_sec`, `aws-cloudwatch`).value/1024,\n`Network IO Outgoing KiB/s`: s.metrics(`infra:system.network.transmit.io_sec`, `aws-cloudwatch`).value/1024\nfrom\ns: entities( aws:ec2) [attributes(`status`) in [ ${Status:raw}] ]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Host Details",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "Normal/Healthy",
+            "Warning",
+            "Critical",
+            "Unknown"
+          ],
+          "value": [
+            "0",
+            "2",
+            "3",
+            "1,null"
+          ]
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Status",
+        "multi": true,
+        "name": "Status",
+        "options": [
+          {
+            "selected": true,
+            "text": "Critical",
+            "value": "3"
+          },
+          {
+            "selected": true,
+            "text": "Warning",
+            "value": "2"
+          },
+          {
+            "selected": true,
+            "text": "Normal/Healthy",
+            "value": "0"
+          },
+          {
+            "selected": true,
+            "text": "Unknown",
+            "value": "1,null"
+          }
+        ],
+        "query": "Critical : 3, Warning : 2, Normal/Healthy : 0, Unknown : 1\\,null",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "appdynamicscloud",
+          "uid": "${DS_AppDynamics_Cloud}"
+        },
+        "definition": "configURL",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Source",
+        "options": [],
+        "query": {
+          "rawQuery": "configURL"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "AWS Host Overview",
+  "uid": "AWSHostOverview",
+  "version": 1,
+  "weekStart": ""
+}

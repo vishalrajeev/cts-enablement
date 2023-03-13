@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "AppDynamics Cloud",
+  "id": "appdynamicscloud",
+  "metrics": true,
+  "info": {
+    "description": "",
+    "author": {
+      "name": "AppDynamics",
+      "url": ""
+    },
+    "keywords": [],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/grafana-starter-datasource"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/grafana-starter-datasource/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2023-01-27"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=9.0.0",
+    "plugins": []
+  },
+  "includes": [
+    {
+      "type": "dashboard",
+      "path": "dashboards/AppDynamicsKubernetesMonitoring.json"
+    },
+    {
+      "type": "dashboard",
+      "path": "dashboards/AppDynamicsAPMMonitoring.json"
+    },
+    {
+      "type": "dashboard",
+      "path": "dashboards/AWSHostDetails.json"
+    },
+    {
+      "type": "dashboard",
+      "path": "dashboards/AWSHostOverview.json"
+    }
+  ]
+}

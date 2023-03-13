@@ -1,0 +1,877 @@
+{
+	"__inputs": [
+    {
+      "name": "DS_AppDynamics_Cloud",
+      "label": "${DS_AppDynamics_Cloud}",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "appdynamicscloud",
+      "pluginName": "${DS_AppDynamics_Cloud}"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.5"
+    },
+    {
+      "type": "datasource",
+      "id": "appdynamicscloud",
+      "name": "${DS_AppDynamics_Cloud}",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Navigate to AppDynamics Cloud UI.",
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<br/>\n<a href=\"${Source}/ui/observe/aws/ec2?filter=attributes(status) IN [${Status:raw}]%26%26%20attributes(host.id) IN [${HostId:singlequote}]&since=${__from}&until=${__to}\" target=\"_blank\">\n  <div style=\"display:flex;justify-content:center;align-items: center;\">\n    <img src=\"./public/plugins/appdynamicscloud/img/logo.svg\" width='32' height='32' alt=\"AppDynamicsLogo\" />\n    <h3 style=\"margin-bottom:0;font-size:28px;padding-left:10px;font-weight:bold\">Click here to view more <br/> on \n    AppDynamics Cloud<h3>\n  </div>\n</a> ",
+        "mode": "html"
+      },
+      "pluginVersion": "9.0.5",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "CPU Utilization(%) for the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 64
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "show": true,
+          "showLegend": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "show": true,
+          "sort": "none",
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`CPU Utilization % `: s.metrics(`infra:system.cpu.used.utilization`, `aws-cloudwatch`)\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Utilization % - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Used vs Balance CPU Credits for the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`CPU Used Credits :`: s.metrics(`cloud:system.cpu.used.credits`, `aws-cloudwatch`),\n`CPU Balance Credits :`: s.metrics(`cloud:system.cpu.balance.credits`, `aws-cloudwatch`)\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\nSINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Credits - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Disk Throughput for the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`Disk Read KiB/sec`: s.metrics(`infra:system.disk.read.io_sec`, `aws-cloudwatch`) / 1024\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\n LIMITS metrics.granularityDuration(PT5M), metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        },
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "hide": false,
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`Disk Written KiB/sec`: s.metrics(`infra:system.disk.write.io_sec`, `aws-cloudwatch`) / 1024\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\n LIMITS metrics.granularityDuration(PT5M), metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk Throughput (KiB/sec) - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Disk IOPS - Operations per seconds on the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 11
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`Disk Reads Ops/sec`:            s.metrics(`infra:system.disk.read.operations_sec`, `aws-cloudwatch`),\n`Disk Writes Ops/sec`:             s.metrics(`infra:system.disk.write.operations_sec`, `aws-cloudwatch`)\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\n LIMITS metrics.granularityDuration(PT5M), metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Disk IOPS (Ops/Sec) - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Network Throughput in KiB per seconds for the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`Network IO Incoming KiB/sec :`: s.metrics(`infra:system.network.receive.io_sec`, `aws-cloudwatch`)/ 1024,\n`Network IO Outgoing KiB/sec :`: s.metrics(`infra:system.network.transmit.io_sec`, `aws-cloudwatch`) / 1024\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\n LIMITS metrics.granularityDuration(PT5M), metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Network Throughput (KiB/sec) - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Number of Network Packets per seconds from the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH\n`Host Id` : attributes(host.id),\n`Network Incoming Packets/sec`:            s.metrics(`infra:system.network.receive.packets_sec`, `aws-cloudwatch`),\n`Network Outgoing Packets/sec`:             s.metrics(`infra:system.network.transmit.packets_sec`, `aws-cloudwatch`)\n        FROM\n            s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]]\n LIMITS metrics.granularityDuration(PT5M), metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Network Packets (Count/sec) - ${HostId}",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "appdynamicscloud",
+        "uid": "${DS_AppDynamics_Cloud}"
+      },
+      "description": "Status Check Failed value for the selected hosts over the selected time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "constant": 6.5,
+          "datasource": {
+            "type": "appdynamicscloud",
+            "uid": "${DS_AppDynamics_Cloud}"
+          },
+          "queryText": "FETCH `Host Id` : attributes(host.id), `Status Check Failed 0/1 :`: s.metrics('aws:ec2.status_check.failure', 'aws-cloudwatch') FROM s: entities(aws:ec2) [attributes(host.id) in [${HostId:singlequote}]] LIMITS metrics.round(3) SINCE $__from UNTIL $__to",
+          "queryTypeSelected": "querybox",
+          "refId": "A"
+        }
+      ],
+      "title": "Status Check Failed (0/1) - ${HostId}",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "Normal/Healthy",
+            "Warning",
+            "Critical",
+            "Unknown"
+          ],
+          "value": [
+            "0",
+            "2",
+            "3",
+            "1,null"
+          ]
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Status",
+        "multi": true,
+        "name": "Status",
+        "options": [
+          {
+            "selected": true,
+            "text": "Critical",
+            "value": "3"
+          },
+          {
+            "selected": true,
+            "text": "Warning",
+            "value": "2"
+          },
+          {
+            "selected": true,
+            "text": "Normal/Healthy",
+            "value": "0"
+          },
+          {
+            "selected": true,
+            "text": "Unknown",
+            "value": "1,null"
+          }
+        ],
+        "query": "Critical : 3, Warning : 2, Normal/Healthy  : 0, Unknown : 1\\,null",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "appdynamicscloud",
+          "uid": "${DS_AppDynamics_Cloud}"
+        },
+        "definition": "fetch attributes(host.id) from entities(aws:ec2) [attributes(status) in [${Status:raw}]]",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Host ID",
+        "multi": true,
+        "name": "HostId",
+        "options": [],
+        "query": {
+          "rawQuery": "fetch attributes(host.id) from entities(aws:ec2) [attributes(status) in [${Status:raw}]]"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "appdynamicscloud",
+          "uid": "${DS_AppDynamics_Cloud}"
+        },
+        "definition": "configURL",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Source",
+        "options": [],
+        "query": {
+          "rawQuery": "configURL"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "AWS Host Details",
+  "uid": "AWSHostDetails",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appd-grafana
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appd-grafana
+  template:
+    metadata:
+      name: appd-grafana
+      labels:
+        app: appd-grafana
+    spec:
+      containers:
+      - name: grafana-plugin-container
+        image: visraj06/appdcloud-grafana-check:3
+        ports:
+        - name: grafana
+          containerPort: 3000
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources
+          name: appd-basic-cm
+          readOnly: false
+      volumes:
+      - name: appd-basic-cm
+        configMap:
+          defaultMode: 420
+          name: appd-basic-cm
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: appd-grafana-service
+  namespace: default
+spec:
+  selector:
+    app: appd-grafana
+  type: NodePort 
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 32001
