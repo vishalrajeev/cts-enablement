@@ -1,0 +1,51 @@
+replicaCount: 3
+metrics:
+  kafka:
+    enabled: true
+    service:
+      ports:
+        metrics: 9308
+      clusterIP: ""
+      sessionAffinity: None
+      annotations:
+        appdynamics.com/exporter_type: "kafka"
+        appdynamics.com/kafka_cluster_name: "kafka-cluster-demo"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        #prometheus.io/port: "9308"
+        prometheus.io/port: "{{ .Values.metrics.kafka.service.ports.metrics }}"
+
+  jmx:
+    enabled: true
+    service:
+      ports:
+        metrics: 5556
+      clusterIP: ""
+      sessionAffinity: None
+      annotations:
+        appdynamics.com/exporter_type: "kafkajmx"
+        appdynamics.com/kafka_cluster_name: "kafka-cluster-demo"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/"
+        #prometheus.io/port: "5556"
+        prometheus.io/port: "{{ .Values.metrics.jmx.service.ports.metrics }}"
+    
+    config: |-
+      jmxUrl: service:jmx:rmi:///jndi/rmi://127.0.0.1:5555/jmxrmi
+      lowercaseOutputName: true
+      lowercaseOutputLabelNames: true
+      ssl: false
+      {{- if .Values.metrics.jmx.whitelistObjectNames }}
+      whitelistObjectNames: ["{{ join "\",\"" .Values.metrics.jmx.whitelistObjectNames }}"]
+      {{- end }}
+  
+    existingConfigmap: "kafka-jmx-configuration-final"
+provisioning:
+  ## @param provisioning.numPartitions Default number of partitions for topics when unspecified
+  numPartitions: 5 
+  ## @param provisioning.replicationFactor Default replication factor for topics when unspecified
+  replicationFactor: 3
+
+
+
+
