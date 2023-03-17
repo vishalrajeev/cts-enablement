@@ -1,0 +1,33 @@
+daemonset:
+  enabled: true
+  image:
+    repository: docker.io/appdynamics/machine-agent-analytics
+    tag: latest
+    pullPolicy: Always
+  tolerations:
+    effect: NoSchedule
+    operator: Exists
+    key: taint-agent
+    effect: NoSchedule
+    operator: Exists
+    key: taint-app
+
+controller:
+  host: ec2-54-184-65-161.us-west-2.compute.amazonaws.com
+  port: 8090
+  ssl: false
+  accountName: customer1
+  globalAccountName: customer1_f161f981-6f1f-4fa8-a6ad-2235b48bd549
+  accessKey: f7161983-e13b-4585-bd9d-abb885e852aa
+
+agent:
+  simEnabled: true
+  dockerEnabled: false
+  includeMasters: true
+  stdoutLogging: true
+  netviz: true
+  netvizPort: 3892
+  netvizImage:
+    repository: docker.io/appdynamics/machine-agent-netviz
+    tag: latest
+    pullPolicy: Always

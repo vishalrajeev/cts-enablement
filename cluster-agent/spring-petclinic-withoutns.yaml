@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+  #namespace: spring-petclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+        - name: spring-app
+          image: visraj06/spring-petclinic
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: "Always"
+#      tolerations:
+#        - key: "taint-app"
+#          operator: "Exists"
+#          effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app
+  #namespace: spring-petclinic
+spec:
+  selector:
+    app: spring-app
+  ports:
+    - name: app-port
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
