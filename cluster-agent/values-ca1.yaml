@@ -8,8 +8,8 @@ installClusterAgent: true
 controllerInfo:
   url: https://channel.saas.appdynamics.com
   account: channel
-  username: rvishal
-  password: changeme
+  username: 
+  password: 
   accessKey: qrzwtryvbavv
   globalAccount: channel_9d8f15cf-0acf-4510-bf5b-7147aae4035c
   
