@@ -18,9 +18,9 @@ spec:
       labels:
         app: spring-app
     spec:
-      securityContext:
-        runAsUser: 1003
-        runAsGroup: 1003  
+      #securityContext:
+        #runAsUser: 1003
+        #runAsGroup: 1003  
       containers:
         - name: spring-app
           image: visraj06/spring-petclinic
