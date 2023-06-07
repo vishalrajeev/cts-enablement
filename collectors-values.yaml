@@ -147,28 +147,28 @@ appdynamics-otel-collector:
   clientSecret: i5EWZ5OY_Xno4ozPDbcl8WvGzNXr7nPH1wX8vAlAIGg
   endpoint: https://lab1.observe.appdynamics.com/data
   tokenUrl: https://lab1.observe.appdynamics.com/auth/dfdbdf71-7322-44d0-85fb-36c69a7c3789/default/oauth2/token
-  configOverride:
-    exporters:
-      logging:
-        loglevel: debug
-    service:
-      extensions: [health_check, oauth2client, zpages]
-      pipelines:
-        logs:
-          receivers: [otlp]
-          processors: [batch, memory_limiter]
-          exporters: [otlphttp, logging]
-        metrics:
-          receivers: [otlp]
-          processors: [batch, memory_limiter]
-          exporters: [otlphttp]
-        traces:
-          receivers: [otlp]
-          processors: [batch, memory_limiter]
-          exporters: [logging, otlphttp]
-      telemetry:
-        logs:
-          level: "debug"
+  #configOverride:
+  #  exporters:
+  #    logging:
+  #      loglevel: debug
+  #  service:
+  #    extensions: [health_check, oauth2client, zpages]
+  #    pipelines:
+  #      logs:
+  #        receivers: [otlp]
+  #        processors: [batch, memory_limiter]
+  #        exporters: [otlphttp, logging]
+  #      metrics:
+  #        receivers: [otlp]
+  #        processors: [batch, memory_limiter]
+  #        exporters: [otlphttp]
+  #      traces:
+  #        receivers: [otlp]
+  #        processors: [batch, memory_limiter]
+  #        exporters: [logging, otlphttp]
+  #    telemetry:
+  #      logs:
+  #        level: "debug"
 # Otel Collector Daemonset Specific Configs
 # otelCollectorPod:
 #   image:  appdynamics/appdynamics-cloud-otel-collector:22.8.0-391
