@@ -28,7 +28,7 @@ spec:
         app: contacts-rv
       annotations:
       #  sidecar.opentelemetry.io/inject: "true"
-      #  instrumentation.opentelemetry.io/inject-python: "true"
+        instrumentation.opentelemetry.io/inject-python: "true"
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
